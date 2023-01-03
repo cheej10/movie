@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 
 from .database import Base
 
-# base 상속받아 sqlalchemy 모델 생성
+# sqlalchemy 모델 생성
 class Movie(Base):
     __tablename__ = "movies"
 

@@ -6,8 +6,11 @@ from fastapi import FastAPI, Depends, Path, HTTPException
 from typing import List
 from pydantic import BaseModel
 from sqlalchemy.orm import Session, sessionmaker
-from . import crud, models, schemas
-from .database import SessionLocal, engine
+# from .db.crud import *
+# from .db.schemas import *
+# from .db.models import *
+from .db import crud, schemas, models
+from .db.database import SessionLocal, engine
 import requests
 import json
 import uuid
@@ -102,7 +105,12 @@ def get_db():
     finally:
         db.close()
 
-@app.get("/", response_model=List[schemas.MovieBase])
-async def first_get(skip: int = 0, limit: int = 0, db: Session = Depends(get_db)):
+@app.get("/movies", response_model=List[schemas.MovieModel])
+async def get_movies(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     movies = crud.get_movies(db, skip=skip, limit=limit)
+    return movies
+
+@app.get("/movies/{movie_id}", response_model=schemas.MovieModel)
+async def get_movie(movie_id, db: Session = Depends(get_db)):
+    movies = crud.get_movie(db, movie_id)
     return movies

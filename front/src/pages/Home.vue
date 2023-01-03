@@ -16,7 +16,7 @@ export default {
     async get_movies() {
       await fetch("http://localhost:8000/movies")
       .then((res) => res.json())
-      .then((data) => (this.movies = JSON.parse(data)));
+      .then(data => console.log(data))
     },
   },
   created() {
